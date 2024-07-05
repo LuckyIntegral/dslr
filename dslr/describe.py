@@ -17,6 +17,10 @@ def ft_count(series: pd.Series) -> np.float64:
 def ft_mean(series: pd.Series) -> np.float64:
     """Returns mean value from the series"""
     filtered = filter_series(series)
+
+    if len(filtered) == 0:
+        return np.nan
+
     return sum(filtered) / len(filtered)
 
 
@@ -24,6 +28,10 @@ def ft_std(series: pd.Series) -> np.float64:
     """Return standart deviation of the series"""
     filtered = filter_series(series)
     mean = ft_mean(series)
+
+    if mean is np.nan:
+        return np.nan
+
     variance = sum((value - mean) ** 2 for value in filtered) / (len(filtered) - 1)
     return variance ** 0.5
 
@@ -31,33 +39,50 @@ def ft_std(series: pd.Series) -> np.float64:
 def ft_min(series: pd.Series) -> np.float64:
     """Returns minimum value from the series"""
     filtered = filter_series(series)
+
+    if len(filtered) == 0:
+        return np.nan
+
     minimum = filtered[0]
     for value in filtered:
         if value < minimum:
             minimum = value
+
     return minimum
 
 
 def ft_max(series: pd.Series) -> np.float64:
     """Returns maximum value from the series"""
     filtered = filter_series(series)
+
+    if len(filtered) == 0:
+        return np.nan
+
     maximum = filtered[0]
     for value in filtered:
         if value > maximum:
             maximum = value
+
     return maximum
 
 
 def ft_quartile(series: pd.Series, quartile: int) -> np.float64:
     """Returns mean value from the series"""
     filtered = sorted(filter_series(series))
+
+    if len(filtered) == 0:
+        return np.nan
+
     position = quartile * (len(filtered) - 1) / 4
     lower = int(math.floor(position))
     upper = int(math.ceil(position))
+
     if lower == upper:
         return filtered[lower]
+
     left = filtered[lower] * (upper - position)
     right = filtered[upper] * (position - lower)
+
     return left + right
 
 
@@ -88,9 +113,10 @@ def main():
         sys.exit(1)
     try:
         df = pd.read_csv(sys.argv[1])
-        print(df.describe(), file=open('orig', '+w'))
-        print(ft_describe(df), file=open('copy', '+w'))
-    except Exception as e:
+        print(ft_describe(df))
+        # print(df.describe(), file=open('orig', '+w'))
+        # print(ft_describe(df), file=open('copy', '+w'))
+    except FileExistsError as e:
         print(f'Error: {e}')
 
 
