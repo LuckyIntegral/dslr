@@ -40,7 +40,7 @@ class HogwartsHistogramService:
             stats = self.df[self.df['Hogwarts House'] == house][self.course]
             ax = axes[i // 2, i % 2]
 
-            ax.hist(stats, color=self.HOUSE_COLORS[house])
+            ax.hist(stats, color=self.HOUSE_COLORS[house], stacked=True)
             ax.set_xlabel("Score")
             ax.set_ylabel("Quantity")
             ax.set_title(house)
@@ -48,10 +48,8 @@ class HogwartsHistogramService:
         plt.tight_layout()
         plt.show()
 
-
-def main() -> None:
-    """Entrypoint to parse arguments and run the service"""
-
+def parse_argument() -> ArgumentParser:
+    """Parse command line arguments"""
     parser = ArgumentParser(usage='histogram.py --data <path to your data> --course <course to plot>')
 
     parser.add_argument('--data',
@@ -67,9 +65,14 @@ def main() -> None:
                         default='Care of Magical Creatures',
                         help='Course for which display hists')
 
-    args = parser.parse_args()
+    return parser.parse_args()
+
+
+def main() -> None:
+    """Entrypoint to parse arguments and run the service"""
 
     try:
+        args = parse_argument()
         histogram_service = HogwartsHistogramService(args.data, args.course)
         histogram_service.plot_data()
     except FileNotFoundError:
