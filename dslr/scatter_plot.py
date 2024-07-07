@@ -1,7 +1,8 @@
+from matplotlib import pyplot as plt
 from argparse import ArgumentParser
-import matplotlib.pyplot as plt
+import seaborn as sns
 import pandas as pd
-from utils import HOUSE_COLORS, HOUSES, COURSES
+from utils import HOUSE_COLORS, COURSES, IMAGES_FOLDER
 
 
 class HogwartsScatterPlotService:
@@ -18,17 +19,16 @@ class HogwartsScatterPlotService:
 
     def plot_data(self) -> None:
         """Displays scatter plot based on the courses scores"""
-        plt.title(f'Comparission of {self.courses[0]} and {self.courses[1]}')
-
-        for house in HOUSES:
-            stat_x = self.df[self.df['Hogwarts House'] == house][self.courses[0]]
-            stat_y = self.df[self.df['Hogwarts House'] == house][self.courses[1]]
-
-            plt.scatter(stat_x, stat_y, alpha=0.4, color=HOUSE_COLORS[house])
-            plt.xlabel(self.courses[0])
-            plt.ylabel(self.courses[1])
-
-        plt.legend(HOUSES, shadow=True)
+        sns.scatterplot(
+            data=self.df,
+            x=self.courses[0],
+            y=self.courses[1],
+            hue='Hogwarts House',
+            palette=HOUSE_COLORS
+        )
+        plt.title(f"{self.courses[0]} vs {self.courses[1]}")
+        plt.tight_layout()
+        plt.savefig(f'{IMAGES_FOLDER}/scatter_plot_{self.courses[0]}_{self.courses[1]}.png')
         plt.show()
 
 

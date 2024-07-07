@@ -2,7 +2,7 @@ from matplotlib import pyplot as plt
 from argparse import ArgumentParser
 import seaborn as sns
 import pandas as pd
-from utils import HOUSE_COLORS
+from utils import HOUSE_COLORS, IMAGES_FOLDER
 
 
 class HogwartsPairPlotService:
@@ -27,6 +27,7 @@ class HogwartsPairPlotService:
             hue='Hogwarts House',
             palette=HOUSE_COLORS
         )
+        plt.savefig(f'{IMAGES_FOLDER}/pair_plot.png')
         plt.show()
 
 

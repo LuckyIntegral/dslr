@@ -1,7 +1,8 @@
-import pandas as pd
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 from argparse import ArgumentParser
-from utils import HOUSE_COLORS, HOUSES, COURSES
+import seaborn as sns
+import pandas as pd
+from utils import HOUSE_COLORS, COURSES, IMAGES_FOLDER
 
 
 class HogwartsHistogramService:
@@ -18,18 +19,20 @@ class HogwartsHistogramService:
 
     def plot_data(self) -> None:
         """Plot histograms for Hogwarts houses based on the course scores"""
-
-        for house in HOUSES:
-            stats = self.df[self.df['Hogwarts House'] == house][self.course]
-
-            stats.plot(kind='hist', alpha=0.4, color=HOUSE_COLORS[house])
-
-            plt.xlabel("Score")
-            plt.ylabel("Quantity")
+        sns.histplot(
+            self.df,
+            x=self.course,
+            hue='Hogwarts House',
+            palette=HOUSE_COLORS,
+            element='step',
+            multiple='layer'
+        )
 
         plt.title(f"{self.course} score distribution")
-        plt.legend(HOUSES, shadow=True)
+        plt.xlabel("Score")
+        plt.ylabel("Quantity")
         plt.tight_layout()
+        plt.savefig(f'{IMAGES_FOLDER}/histogram_{self.course}.png')
         plt.show()
 
 

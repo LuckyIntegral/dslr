@@ -1,7 +1,5 @@
 """ Constants for the DSLR project. """
 
-HOUSES = ['Gryffindor', 'Ravenclaw', 'Hufflepuff', 'Slytherin']
-
 HOUSE_COLORS = {
     'Gryffindor': 'red',
     'Ravenclaw': 'blue',
@@ -15,3 +13,5 @@ COURSES = [
     'Ancient Runes', 'History of Magic', 'Transfiguration', 'Potions',
     'Care of Magical Creatures', 'Charms', 'Flying'
 ]
+
+IMAGES_FOLDER = 'images'
