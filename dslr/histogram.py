@@ -28,7 +28,7 @@ class HogwartsHistogramService:
             plt.ylabel("Quantity")
 
         plt.title(f"{self.course} score distribution")
-        plt.legend(HOUSES)
+        plt.legend(HOUSES, shadow=True)
         plt.tight_layout()
         plt.show()
 
