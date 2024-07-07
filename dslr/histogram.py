@@ -36,16 +36,18 @@ class HogwartsHistogramService:
 def parse_argument() -> ArgumentParser:
     """Parse command line arguments"""
     parser = ArgumentParser(
-        usage='histogram.py --data <path to your data> --course <course to plot>'
+        usage='histogram.py -d <path to your data> -c <course to plot>'
     )
 
-    parser.add_argument('--data',
+    parser.add_argument('-d',
+                        '--data',
                         type=str,
                         required=False,
                         default='data/dataset_train.csv',
                         help='Path to data')
 
-    parser.add_argument('--course',
+    parser.add_argument('-c',
+                        '--course',
                         type=str,
                         required=False,
                         choices=COURSES,

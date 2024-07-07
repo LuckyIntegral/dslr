@@ -18,14 +18,13 @@ class HogwartsScatterPlotService:
 
     def plot_data(self) -> None:
         """Displays scatter plot based on the courses scores"""
-        plt.figure(figsize=(12, 7), dpi=90)
         plt.title(f'Comparission of {self.courses[0]} and {self.courses[1]}')
 
         for house in HOUSES:
             stat_x = self.df[self.df['Hogwarts House'] == house][self.courses[0]]
             stat_y = self.df[self.df['Hogwarts House'] == house][self.courses[1]]
 
-            plt.scatter(stat_x, stat_y, color=HOUSE_COLORS[house])
+            plt.scatter(stat_x, stat_y, alpha=0.4, color=HOUSE_COLORS[house])
             plt.xlabel(self.courses[0])
             plt.ylabel(self.courses[1])
 
@@ -36,16 +35,18 @@ class HogwartsScatterPlotService:
 def parse_argument() -> ArgumentParser:
     """Parse command line arguments"""
     parser = ArgumentParser(
-        usage='histogram.py --data <path to your data> --course <course to plot> <course to plot>'
+        usage='histogram.py -d <data> -c <course to plot> <course to plot>'
     )
 
-    parser.add_argument('--data',
+    parser.add_argument('-d',
+                        '--data',
                         type=str,
                         required=False,
                         default='data/dataset_train.csv',
                         help='Path to data')
 
-    parser.add_argument('--course',
+    parser.add_argument('-c',
+                        '--course',
                         type=str,
                         required=False,
                         nargs=2,
