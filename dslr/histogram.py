@@ -13,7 +13,7 @@ class HogwartsHistogramService:
         'Slytherin': 'yellow',
     }
     COURSES = [
-        'Hogwarts House', 'Arithmancy', 'Astronomy', 'Herbology',
+        'Arithmancy', 'Astronomy', 'Herbology',
         'Defense Against the Dark Arts', 'Divination', 'Muggle Studies',
         'Ancient Runes', 'History of Magic', 'Transfiguration', 'Potions',
         'Care of Magical Creatures', 'Charms', 'Flying'
@@ -70,7 +70,6 @@ def parse_argument() -> ArgumentParser:
 
 def main() -> None:
     """Entrypoint to parse arguments and run the service"""
-
     try:
         args = parse_argument()
         histogram_service = HogwartsHistogramService(args.data, args.course)
