@@ -1,23 +1,11 @@
 from argparse import ArgumentParser
 import matplotlib.pyplot as plt
 import pandas as pd
+from utils import HOUSE_COLORS, HOUSES, COURSES
+
 
 class HogwartsScatterPlotService:
     """Service that compares courses using scatter plot"""
-    HOUSES = ['Gryffindor', 'Ravenclaw', 'Hufflepuff', 'Slytherin']
-    HOUSE_COLORS = {
-        'Gryffindor': 'red',
-        'Ravenclaw': 'blue',
-        'Hufflepuff': 'green',
-        'Slytherin': 'yellow',
-    }
-    COURSES = [
-        'Arithmancy', 'Astronomy', 'Herbology',
-        'Defense Against the Dark Arts', 'Divination', 'Muggle Studies',
-        'Ancient Runes', 'History of Magic', 'Transfiguration', 'Potions',
-        'Care of Magical Creatures', 'Charms', 'Flying'
-    ]
-
     def __init__(self, path: str, courses: list[str]) -> None:
         """Initialize the service with the dataset and the courses to analyze
         Args:
@@ -33,15 +21,15 @@ class HogwartsScatterPlotService:
         plt.figure(figsize=(12, 7), dpi=90)
         plt.title(f'Comparission of {self.courses[0]} and {self.courses[1]}')
 
-        for house in self.HOUSES:
+        for house in HOUSES:
             stat_x = self.df[self.df['Hogwarts House'] == house][self.courses[0]]
             stat_y = self.df[self.df['Hogwarts House'] == house][self.courses[1]]
 
-            plt.scatter(stat_x, stat_y, color=self.HOUSE_COLORS[house])
+            plt.scatter(stat_x, stat_y, color=HOUSE_COLORS[house])
             plt.xlabel(self.courses[0])
             plt.ylabel(self.courses[1])
 
-        plt.legend(self.HOUSES, shadow=True)
+        plt.legend(HOUSES, shadow=True)
         plt.show()
 
 
@@ -61,7 +49,7 @@ def parse_argument() -> ArgumentParser:
                         type=str,
                         required=False,
                         nargs=2,
-                        choices=HogwartsScatterPlotService.COURSES,
+                        choices=COURSES,
                         default=['Astronomy', 'Defense Against the Dark Arts'],
                         help='Course for which display hists')
 

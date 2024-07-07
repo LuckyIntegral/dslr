@@ -1,24 +1,11 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from argparse import ArgumentParser
+from utils import HOUSE_COLORS, HOUSES, COURSES
 
 
 class HogwartsHistogramService:
     """Service to plot histograms for Hogwarts houses based on course scores"""
-    HOUSES = ['Gryffindor', 'Ravenclaw', 'Hufflepuff', 'Slytherin']
-    HOUSE_COLORS = {
-        'Gryffindor': 'red',
-        'Ravenclaw': 'blue',
-        'Hufflepuff': 'green',
-        'Slytherin': 'yellow',
-    }
-    COURSES = [
-        'Arithmancy', 'Astronomy', 'Herbology',
-        'Defense Against the Dark Arts', 'Divination', 'Muggle Studies',
-        'Ancient Runes', 'History of Magic', 'Transfiguration', 'Potions',
-        'Care of Magical Creatures', 'Charms', 'Flying'
-    ]
-
     def __init__(self, path: str, course: str) -> None:
         """Initialize the service with the dataset and the course to analyze
         Args:
@@ -36,11 +23,11 @@ class HogwartsHistogramService:
 
         fig, axes = plt.subplots(num_rows, num_cols, figsize=(10, 7))
 
-        for i, house in enumerate(self.HOUSES):
+        for i, house in enumerate(HOUSES):
             stats = self.df[self.df['Hogwarts House'] == house][self.course]
             ax = axes[i // 2, i % 2]
 
-            ax.hist(stats, color=self.HOUSE_COLORS[house], stacked=True)
+            ax.hist(stats, color=HOUSE_COLORS[house], stacked=True)
             ax.set_xlabel("Score")
             ax.set_ylabel("Quantity")
             ax.set_title(house)
@@ -48,9 +35,12 @@ class HogwartsHistogramService:
         plt.tight_layout()
         plt.show()
 
+
 def parse_argument() -> ArgumentParser:
     """Parse command line arguments"""
-    parser = ArgumentParser(usage='histogram.py --data <path to your data> --course <course to plot>')
+    parser = ArgumentParser(
+        usage='histogram.py --data <path to your data> --course <course to plot>'
+    )
 
     parser.add_argument('--data',
                         type=str,
@@ -61,7 +51,7 @@ def parse_argument() -> ArgumentParser:
     parser.add_argument('--course',
                         type=str,
                         required=False,
-                        choices=HogwartsHistogramService.COURSES,
+                        choices=COURSES,
                         default='Care of Magical Creatures',
                         help='Course for which display hists')
 
