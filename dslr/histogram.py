@@ -18,20 +18,17 @@ class HogwartsHistogramService:
 
     def plot_data(self) -> None:
         """Plot histograms for Hogwarts houses based on the course scores"""
-        num_cols = 2
-        num_rows = 2
 
-        fig, axes = plt.subplots(num_rows, num_cols, figsize=(10, 7))
-
-        for i, house in enumerate(HOUSES):
+        for house in HOUSES:
             stats = self.df[self.df['Hogwarts House'] == house][self.course]
-            ax = axes[i // 2, i % 2]
 
-            ax.hist(stats, color=HOUSE_COLORS[house], stacked=True)
-            ax.set_xlabel("Score")
-            ax.set_ylabel("Quantity")
-            ax.set_title(house)
+            stats.plot(kind='hist', alpha=0.4, color=HOUSE_COLORS[house])
 
+            plt.xlabel("Score")
+            plt.ylabel("Quantity")
+
+        plt.title(f"{self.course} score distribution")
+        plt.legend(HOUSES)
         plt.tight_layout()
         plt.show()
 
