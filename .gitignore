@@ -1,5 +1,6 @@
 # Custom
 images/*.png
+*logreg_model.pkl
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
