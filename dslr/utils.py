@@ -1,5 +1,7 @@
 """ Constants for the DSLR project. """
 
+HOUSES = ['Gryffindor', 'Ravenclaw', 'Hufflepuff', 'Slytherin']
+
 HOUSE_COLORS = {
     'Gryffindor': 'red',
     'Ravenclaw': 'blue',

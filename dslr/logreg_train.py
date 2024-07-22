@@ -19,13 +19,13 @@ def parse_argument() -> ArgumentParser:
 
 def main() -> None:
     """Entrypoint to parse arguments and run the service"""
-    try:
-        args = parse_argument()
-        model = LogisticRegression(args.data)
-        model.train()
-        model.save_model()
-    except Exception as e:
-        print(f'Error: {e}')
+    # try:
+    args = parse_argument()
+    model = LogisticRegression(args.data)
+    model.train()
+    model.save_model()
+    # except Exception as e:
+        # print(f'Error: {e}')
 
 
 if __name__ == '__main__':
