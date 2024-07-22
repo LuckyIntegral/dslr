@@ -16,4 +16,11 @@ COURSES = [
     'Care of Magical Creatures', 'Charms', 'Flying'
 ]
 
+FEATURES_TO_DROP = ['Care of Magical Creatures', 'Arithmancy', 'Defense Against the Dark Arts', 'First Name', 'Last Name', 'Birthday', 'Best Hand', 'Index']
+
 IMAGES_FOLDER = 'images'
+
+MODEL_SETUPS = {
+    'learning_rate': 0.1,
+    'epochs': 10000,
+}

@@ -23,7 +23,7 @@ def main() -> None:
     args = parse_argument()
     model = LogisticRegression(args.data)
     model.train()
-    model.save_model()
+    model.save_model('weights.csv')
     # except Exception as e:
         # print(f'Error: {e}')
 
