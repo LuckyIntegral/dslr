@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 import pandas as pd
 import numpy as np
 import math
@@ -106,16 +107,28 @@ def ft_describe(df: pd.DataFrame) -> pd.DataFrame:
 
     return res
 
+def parse_argument() -> ArgumentParser:
+    """Parse command line arguments"""
+    parser = ArgumentParser(
+        usage='describe.py <path to dataset>'
+    )
+
+    parser.add_argument(
+        dest='data',
+        type=str,
+        help='Path to data'
+    )
+
+    return parser.parse_args()
+
 
 def main():
-    if len(sys.argv) != 2:
-        print(f'Usage: {sys.argv[0]} <path to dataset>')
-        sys.exit(1)
     try:
-        df = pd.read_csv(sys.argv[1])
+        args = parse_argument()
+        data = args.data
+        df = pd.read_csv(data)
         print(ft_describe(df))
-        # print(df.describe(), file=open('orig', '+w'))
-        # print(ft_describe(df), file=open('copy', '+w'))
+        # print(df.describe())
     except FileExistsError as e:
         print(f'Error: {e}')
 

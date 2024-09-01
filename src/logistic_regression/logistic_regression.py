@@ -1,11 +1,11 @@
 import pandas as pd
 import numpy as np
 import sklearn.ensemble
-from utils import HOUSES, FEATURES_TO_DROP, MODEL_SETUPS
+from src.utils.constants import HOUSES, FEATURES_TO_DROP, MODEL_SETUPS
 import matplotlib.pyplot as plt
 from sklearn import linear_model
 import sklearn
-from describe import ft_mean, ft_std
+from src.utils.describe import ft_mean, ft_std
 
 
 class LogisticRegression:

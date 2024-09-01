@@ -2,10 +2,9 @@ from matplotlib import pyplot as plt
 from argparse import ArgumentParser
 import seaborn as sns
 import pandas as pd
-from utils import HOUSE_COLORS, IMAGES_FOLDER
+from src.utils.constants import HOUSE_COLORS, IMAGES_FOLDER
 
-
-class HogwartsPairPlotService:
+class PairPlotService:
     """Service to pair plot data"""
     def __init__(self, path: str) -> None:
         """Initialize the service with the dataset"""
@@ -27,7 +26,10 @@ class HogwartsPairPlotService:
             hue='Hogwarts House',
             palette=HOUSE_COLORS
         )
-        plt.savefig(f'{IMAGES_FOLDER}/pair_plot.png')
+        try:
+            plt.savefig(f'{IMAGES_FOLDER}/pair_plot.png')
+        except FileNotFoundError:
+            print(f'Error: The folder {IMAGES_FOLDER} was not found.')
         plt.show()
 
 
@@ -51,7 +53,7 @@ def main() -> None:
     """Entrypoint to parse arguments and run the service"""
     try:
         args = parse_argument()
-        pair_plt_service = HogwartsPairPlotService(args.data)
+        pair_plt_service = PairPlotService(args.data)
         pair_plt_service.plot_data()
     except FileNotFoundError:
         print(f'Error: The file {args.data} was not found.')
