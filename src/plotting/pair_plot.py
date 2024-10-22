@@ -2,7 +2,7 @@ from matplotlib import pyplot as plt
 from argparse import ArgumentParser
 import seaborn as sns
 import pandas as pd
-from src.utils.constants import HOUSE_COLORS, IMAGES_FOLDER
+from constants import HOUSE_COLORS, IMAGES_FOLDER
 
 class PairPlotService:
     """Service to pair plot data"""

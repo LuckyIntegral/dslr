@@ -1,12 +1,18 @@
 import pandas as pd
 import numpy as np
 import sklearn.ensemble
-from src.utils.constants import HOUSES, FEATURES_TO_DROP, MODEL_SETUPS
 import matplotlib.pyplot as plt
 from sklearn import linear_model
 import sklearn
-from src.utils.describe import ft_mean, ft_std
 
+HOUSES = ['Gryffindor', 'Ravenclaw', 'Hufflepuff', 'Slytherin']
+
+FEATURES_TO_DROP = ['Care of Magical Creatures', 'Arithmancy', 'Defense Against the Dark Arts', 'First Name', 'Last Name', 'Birthday', 'Best Hand', 'Index']
+
+MODEL_SETUPS = {
+    'learning_rate': 0.1,
+    'epochs': 10000,
+}
 
 class LogisticRegression:
     '''Logistic Regression model'''
@@ -19,22 +25,9 @@ class LogisticRegression:
         self.epochs = MODEL_SETUPS['epochs']
 
     def hypothesis(self, weights: np.array, features: np.array) -> np.array:
-        '''Hypothesis function
-        args:
-            weights: weights of the model
-            features: features
-        return:
-            predicted values
-        '''
         return 1 / (1 + np.exp(-np.dot(features, weights.T)))
 
     def one_vs_all(self, house: str) -> np.array:
-        '''Train the model for one vs all
-        args:
-            house: house to train the model
-        return:
-            weights: weights of the model
-        '''
         weights = np.ones(shape=(self.X.shape[1]))
         actual = np.where(self.Y == house, 1, 0)
         for _ in range(self.epochs):
@@ -45,7 +38,6 @@ class LogisticRegression:
         return weights
 
     def train(self) -> None:
-        '''Train the model'''
 
         for house in HOUSES:
             weights = self.one_vs_all(house)
@@ -54,10 +46,6 @@ class LogisticRegression:
         print(f'Accuracy: {self.accuracy()}')
 
     def accuracy(self) -> float:
-        '''Compute the accuracy of the model
-        return:
-            accuracy: accuracy of the model
-        '''
         predictions = pd.DataFrame(columns=HOUSES)
         for house in HOUSES:
             weights = self.weights.loc[house]
@@ -67,41 +55,32 @@ class LogisticRegression:
         return (predictions['Hogwarts House'] == self.Y).mean() * 100
 
     def save_model(self, filename: str) -> None:
-        '''Store the model'''
         pd.to_pickle(self.weights, filename)
 
     def load_model(self, filename: str) -> None:
-        '''Load the model'''
         self.weights = pd.read_pickle(filename)
 
     def predict(self, dataset: str) -> pd.DataFrame:
-        '''Predict the house of the students
-        args:
-            dataset: path to the dataset
-        return:
-            predictions: predicted house of the students
-        '''
+        res = pd.DataFrame(columns=["Hogwarts House"])
         df = pd.read_csv(dataset)
+        df.fillna(0, inplace=True)
         X = df.drop(FEATURES_TO_DROP, axis=1).drop('Hogwarts House', axis=1)
         X = X.apply(lambda col: self.standardize(col))
         predictions = pd.DataFrame(columns=HOUSES)
         for house in HOUSES:
             weights = self.weights.loc[house]
             predictions[house] = self.hypothesis(weights, X)
-        # predictions['Hogwarts House'] = predictions.idxmax(axis=1)
-        return predictions.idxmax(axis=1)
+
+        res["Index"] = df["Index"]
+        res['Hogwarts House'] = predictions.idxmax(axis=1)
+        res.set_index('Index', inplace=True)
+        return res
 
 
     def parse_csv(self, df: pd.DataFrame) -> tuple:
-        '''Parse the dataframe to get features and target
-        args:
-            df: dataframe to parse
-        return:
-            X: features
-            Y: target
-        '''
         df.drop(FEATURES_TO_DROP, axis=1, inplace=True)
-        df.dropna(inplace=True)
+        # df.dropna(inplace=True)
+        df.fillna(0, inplace=True) # fill NaN values with 0, no way it works better
 
         X = df.drop('Hogwarts House', axis=1)
         X = X.apply(lambda col: self.standardize(col))
@@ -109,12 +88,6 @@ class LogisticRegression:
         return X, Y
 
     def standardize(self, col: np.array) -> np.array:
-        '''standardize the column
-        args:
-            col: column to standardize
-        return:
-            standardized column with mean 0 and std 1
-        '''
-        mean = ft_mean(col)
-        std = ft_std(col)
+        mean = np.mean(col)
+        std = np.std(col)
         return (col - mean) / std

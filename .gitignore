@@ -1,6 +1,7 @@
 # Custom
 images/*.png
-*logreg_model.pkl
+weights.pkl
+houses.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
