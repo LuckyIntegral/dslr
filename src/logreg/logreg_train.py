@@ -1,10 +1,11 @@
 from argparse import ArgumentParser
 from logistic_regression import LogisticRegression
 
+
 def parse_argument() -> ArgumentParser:
     """Parse command line arguments"""
     parser = ArgumentParser(
-        usage='logreg_predict.py -d <path to the data> -m <path to the model>'
+        usage='logreg_train.py -d <path to your data> -a <algorithm>'
     )
 
     parser.add_argument('-d',
@@ -13,11 +14,13 @@ def parse_argument() -> ArgumentParser:
                         required=True,
                         help='Path to data')
 
-    parser.add_argument('-m',
-                        '--model',
+    parser.add_argument('-a',
+                        '--algorithm',
                         type=str,
-                        required=True,
-                        help='Path to model')
+                        required=False,
+                        default='stochastic_gradient_descent',
+                        choices=['gradient_descent', 'stochastic_gradient_descent', 'mini_batch_gradient_descent'],
+                        help='Algorithm to use for training')
 
     return parser.parse_args()
 
@@ -27,9 +30,8 @@ def main() -> None:
     try:
         args = parse_argument()
         model = LogisticRegression(args.data)
-        model.load_model(args.model)
-        predictions = model.predict(args.data)
-        predictions.to_csv('houses.csv')
+        model.train(args.algorithm)
+        model.save_model('weights.pkl')
     except Exception as e:
         print(f'Error: {e}')
 
