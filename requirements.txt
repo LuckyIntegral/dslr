@@ -1,7 +1,7 @@
-pip==24.1.2
+pip==24.2
 pandas==2.2.2
-numpy==2.0.0
-matplotlib==3.9.0
+numpy==2.1.1
+matplotlib==3.9.2
+seaborn==0.13.2
 PyQt5==5.15.10
 tqdm==4.66.4
-seaborn==0.13.2
