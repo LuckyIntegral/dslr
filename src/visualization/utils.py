@@ -12,3 +12,5 @@ COURSES = [
     'Ancient Runes', 'History of Magic', 'Transfiguration', 'Potions',
     'Care of Magical Creatures', 'Charms', 'Flying'
 ]
+
+PATH_DATASET = 'data/raw/dataset_train.csv'
