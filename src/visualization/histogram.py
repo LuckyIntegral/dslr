@@ -28,22 +28,13 @@ def parse_argument() -> ArgumentParser:
     parser = ArgumentParser(
         usage='histogram.py -c <course to plot> -d <dataset to plot>'
     )
-
-    parser.add_argument('-c',
-                        type=str,
-                        required=False,
-                        choices=COURSES,
+    parser.add_argument('-c', type=str, required=False, choices=COURSES,
                         default='Care of Magical Creatures',
                         help='Course for which display hists')
-
-    parser.add_argument('-d',
-                        type=str,
-                        required=False,
+    parser.add_argument('-d', type=str, required=False,
                         default='data/raw/dataset_train.csv',
                         help='Path to the dataset')
-
-    parser.add_argument('-s',
-                        action='store_true',
+    parser.add_argument('-s', action='store_true', default=True,
                         help='Save the plot (Optional)')
 
     return parser.parse_args()
