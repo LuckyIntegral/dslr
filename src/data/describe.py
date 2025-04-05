@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
-import math, sys
+import math
+from argparse import ArgumentParser
 
 
 def filter_series(series: pd.Series) -> pd.Series:
@@ -105,23 +106,29 @@ def ft_describe(df: pd.DataFrame, is_bonus: bool) -> pd.DataFrame:
 
     return res
 
+
+def parse_argument() -> ArgumentParser:
+    parser = ArgumentParser(
+        usage='describe.py -d <dataset to plot> -b'
+    )
+
+    parser.add_argument('-d',
+                        type=str,
+                        required=False,
+                        default='data/raw/dataset_train.csv',
+                        help='Path to the dataset')
+
+    parser.add_argument('-b',
+                        action='store_true',
+                        help='Bonus argument')
+
+    return parser.parse_args()
+
+
 def main():
-    if len(sys.argv) == 1:
-        print('Error: missing arguments')
-        sys.exit(1)
-    if len(sys.argv) > 3:
-        print('Error: too many arguments')
-        sys.exit(1)
-    if len(sys.argv) == 3 and sys.argv[2] != 'bonus':
-        print('Error: invalid argument')
-        sys.exit(1)
-    bonus = len(sys.argv) == 3 and sys.argv[2] == 'bonus'
-    try:
-        df = pd.read_csv(sys.argv[1])
-        print(ft_describe(df, bonus).to_string())
-        # print(df.describe().to_string())
-    except Exception as e:
-        print(f'Error: {e}')
+    args = parse_argument()
+    df = pd.read_csv(args.d)
+    print(ft_describe(df, args.b).to_string())
 
 
 if __name__ == '__main__':

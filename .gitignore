@@ -2,6 +2,7 @@
 images/*.png
 weights.pkl
 houses.csv
+data/processed/*.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

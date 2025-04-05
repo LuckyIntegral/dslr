@@ -2,7 +2,7 @@ from matplotlib import pyplot as plt
 from argparse import ArgumentParser
 import seaborn as sns
 import pandas as pd
-from utils import HOUSE_COLORS, COURSES
+from utils import HOUSE_COLORS, COURSES, PATH_DATASET
 
 
 def scatter_plot(df: pd.DataFrame, courses: list) -> None:
@@ -16,19 +16,13 @@ def scatter_plot(df: pd.DataFrame, courses: list) -> None:
 
     plt.title(f"{courses[0]} vs {courses[1]}")
     plt.tight_layout()
+    plt.savefig(f'images/scatter_plot_{courses[0]}_{courses[1]}.png')
     plt.show()
 
 
 def parse_argument() -> ArgumentParser:
-    parser = ArgumentParser(
-        usage='histogram.py -c <course to plot> <course to plot>'
-    )
-
-    parser.add_argument('-c',
-                        type=str,
-                        required=False,
-                        nargs=2,
-                        choices=COURSES,
+    parser = ArgumentParser(usage='histogram.py -c <course to plot> <course to plot>')
+    parser.add_argument('-c', type=str, required=False, nargs=2, choices=COURSES,
                         default=['Astronomy', 'Defense Against the Dark Arts'],
                         help='Course for which display hists')
 
@@ -36,12 +30,9 @@ def parse_argument() -> ArgumentParser:
 
 
 def main() -> None:
-    try:
-        args = parse_argument()
-        dataset = pd.read_csv('data/dataset_train.csv')
-        scatter_plot(dataset, args.c)
-    except Exception as e:
-        print(f'Error: {e}')
+    args = parse_argument()
+    dataset = pd.read_csv(PATH_DATASET)
+    scatter_plot(dataset, args.c)
 
 
 if __name__ == '__main__':

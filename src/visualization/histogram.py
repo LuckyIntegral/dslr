@@ -2,10 +2,10 @@ from matplotlib import pyplot as plt
 from argparse import ArgumentParser
 import seaborn as sns
 import pandas as pd
-from utils import HOUSE_COLORS, COURSES
+from utils import HOUSE_COLORS, COURSES, PATH_DATASET
 
 
-def plot_histogram(df: pd.DataFrame, course: str) -> None:
+def plot_histogram(df: pd.DataFrame, course: str, save: bool = False) -> None:
     sns.histplot(
         df,
         x=course,
@@ -19,18 +19,14 @@ def plot_histogram(df: pd.DataFrame, course: str) -> None:
     plt.xlabel("Score")
     plt.ylabel("Quantity")
     plt.tight_layout()
+    if save:
+        plt.savefig(f'images/histogram_{course}.png')
     plt.show()
 
 
 def parse_argument() -> ArgumentParser:
-    parser = ArgumentParser(
-        usage='histogram.py -c <course to plot>'
-    )
-
-    parser.add_argument('-c',
-                        type=str,
-                        required=False,
-                        choices=COURSES,
+    parser = ArgumentParser(usage='histogram.py -c <course to plot>')
+    parser.add_argument('-c', type=str, required=False, choices=COURSES,
                         default='Care of Magical Creatures',
                         help='Course for which display hists')
 
@@ -38,12 +34,9 @@ def parse_argument() -> ArgumentParser:
 
 
 def main() -> None:
-    try:
-        args = parse_argument()
-        dataset = pd.read_csv('data/dataset_train.csv')
-        plot_histogram(dataset, args.c)
-    except Exception as e:
-        print(f'Error: {e}')
+    args = parse_argument()
+    dataset = pd.read_csv(PATH_DATASET)
+    plot_histogram(dataset, args.c)
 
 
 if __name__ == '__main__':
