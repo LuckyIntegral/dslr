@@ -33,7 +33,8 @@ def ft_std(series: pd.Series) -> np.float64:
     if denominator == 0:
         return np.nan
 
-    return sum((value - mean) ** 2 for value in filtered) / denominator ** 0.5
+    variance = sum((value - mean) ** 2 for value in filtered) / denominator
+    return math.sqrt(variance)
 
 
 def ft_min(series: pd.Series) -> np.float64:
