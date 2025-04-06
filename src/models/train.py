@@ -3,7 +3,6 @@ from argparse import ArgumentParser, Namespace
 from typing import Callable, Tuple
 from tqdm import tqdm
 from dataclasses import dataclass
-from predict import sigmoid, hypothesis, predict
 import pandas as pd
 import numpy as np
 import logging
@@ -137,6 +136,30 @@ def train(algo: str,
             weights_dict,
             index=[f"feature_{i}" for i in range(features.shape[1])]
         ).T
+
+
+def sigmoid(z: np.ndarray) -> np.ndarray:
+    """ Compute the sigmoid function """
+    return 1 / (1 + np.exp(-z))
+
+
+def hypothesis(weights: np.ndarray, features: np.ndarray) -> np.ndarray:
+    """ Calculate the hypothesis using the sigmoid function """
+    return sigmoid(np.dot(features, weights.T))
+
+
+def predict(features: np.ndarray, weights: pd.DataFrame) -> pd.DataFrame:
+    """ Generate predictions for each sample in the dataset """
+    predictions = pd.DataFrame(columns=HOUSES)
+    res = pd.DataFrame(columns=["Hogwarts House"])
+
+    for house in HOUSES:
+        predictions[house] = hypothesis(weights.loc[house].values, features)
+
+    res['Hogwarts House'] = predictions.idxmax(axis=1)
+    res.index.name = 'Index'
+
+    return res
 
 
 def parse_arguments() -> Namespace:
