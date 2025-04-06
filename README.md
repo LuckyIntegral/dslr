@@ -1,140 +1,136 @@
-# 🧙‍♂️ DSLR – Logistic Regression from Scratch
+# 🧙‍♂️ DSLR – The Hogwarts Sorting Hat Algorithm
 
-## 🌟 Highlights
+## 🌟 Project Overview
 
-- **Machine Learning from Scratch** – No Scikit-Learn, only raw Python, NumPy, and Pandas.
-- **One-vs-All Logistic Regression** – Classifies Hogwarts students into houses based on academic attributes.
-- **Multiple Training Algorithms** – Supports **Gradient Descent, Stochastic Gradient Descent, and Mini-Batch Gradient Descent**.
-- **Custom Feature Engineering & Standardization** – No built-in functions for mean, standard deviation, or statistics.
-- **Data Analysis & Visualization** – Histograms, scatter plots, and pair plots for feature selection.
-- **Command-Line Interface** – Train and predict using simple CLI commands.
+This project recreates the Hogwarts Sorting Hat using machine learning! We've implemented a **logistic regression classifier from scratch** that can accurately assign students to their appropriate Hogwarts houses based on their academic performance.
 
----
+### Key Features
 
-## ℹ️ Overview
+- ✨ **Pure Magic (No High-Level Libraries)** - Everything is implemented from scratch with only basic Python, NumPy, and Pandas
+- 🎯 **98%+ Accuracy** - Our model achieves McGonagall's required accuracy threshold
+- 🔄 **Multiple Learning Algorithms** - Choose from three different gradient descent approaches
+- 📊 **Data Visualization Suite** - Tools to understand Hogwarts student data patterns
+- 🧰 **Custom Statistical Functions** - Hand-coded functions for all statistical operations
 
-**DSLR (Data Science x Logistic Regression)** is a **machine learning project** that implements **logistic regression from scratch** to classify Hogwarts students into their respective houses. Unlike traditional ML projects, this one **avoids high-level ML libraries** and focuses on **raw algorithm implementation, feature selection, and optimization techniques**.
+## 📊 Project Demonstrations
 
-**Key Features:**\
-✅ Supports multiple gradient descent techniques: **Batch, Stochastic, and Mini-Batch Gradient Descent**.\
-✅ Implements a **one-vs-all classifier** for multi-class classification.\
-✅ Uses **handwritten functions for mean, standard deviation, and normalization** (no built-in NumPy/Pandas shortcuts).\
-✅ Provides **data visualization tools** to assist in feature selection and model interpretation.\
-✅ Offers a **command-line interface** for training and prediction.
+### 1. Data Analysis Tool
 
----
-
-## 🚀 Installation & Setup
-
-### **1. Clone the Repository**
+Our `describe.py` script provides statistical insights about the dataset, similar to Pandas' describe() function but built entirely from scratch:
 
 ```bash
+python src/data/describe.py -d data/raw/dataset_train.csv
+```
+
+Add the `-b` flag for bonus statistics:
+
+```bash
+python src/data/describe.py -d data/raw/dataset_train.csv -b
+```
+
+### 2. Data Visualization
+
+Explore the student data with various plots:
+
+**Histogram**: Find courses with homogeneous distributions across houses
+```bash
+python src/visualization/histogram.py -c "Astronomy"
+```
+
+**Scatter Plot**: Discover correlated features
+```bash
+python src/visualization/scatter_plot.py -c "Astronomy" "Defense Against the Dark Arts"
+```
+
+**Pair Plot**: Comprehensive view of feature relationships
+```bash
+python src/visualization/pair_plot.py
+```
+
+### 3. The Sorting Hat Algorithm (Logistic Regression)
+
+Train the sorting algorithm with different optimization methods:
+
+```bash
+# Default: Stochastic Gradient Descent (fastest)
+python src/models/train.py -d data/processed/dataset_train.csv
+
+# Batch Gradient Descent (most stable)
+python src/models/train.py -d data/processed/dataset_train.csv -a gradient_descent
+
+# Mini-Batch Gradient Descent (balanced approach)
+python src/models/train.py -d data/processed/dataset_train.csv -a mini_batch_gradient_descent
+```
+
+Sort new students with the trained algorithm:
+
+```bash
+python src/models/predict.py -d data/processed/dataset_test.csv -m weights.pkl
+```
+
+## 🧠 The Magic Behind the Algorithm
+
+This project implements a **one-vs-all logistic regression classifier** with three gradient descent optimization techniques:
+
+1. **Batch Gradient Descent**: Updates weights using the entire dataset for each iteration
+2. **Stochastic Gradient Descent**: Updates weights using one random example at a time
+3. **Mini-Batch Gradient Descent**: Updates weights using small random batches of examples
+
+Each approach offers different trade-offs between training speed and convergence stability.
+
+## 🛠️ Setup Instructions
+
+### Requirements
+
+- Python 3.8+
+
+### Installation
+
+```bash
+# Clone the repository
 git clone https://github.com/LuckyIntegral/dslr.git
 cd dslr
-```
 
-### **2. Install Dependencies**
-
-```bash
+# Install dependencies
 pip install -r requirements.txt
+
+# Prepare the dataset (removes unnecessary features and handles missing values)
+python src/data/prepare_dataset.py -i data/raw/dataset_train.csv -o data/processed/dataset_train.csv
+python src/data/prepare_dataset.py -i data/raw/dataset_test.csv -o data/processed/dataset_test.csv
 ```
 
----
-
-## 📈 Training the Model
-
-Run the training script, specifying the dataset and the gradient descent algorithm to use:
-
-```bash
-python src/logreg/logreg_train.py -d data/dataset_train.csv -a stochastic_gradient_descent
-```
-
-Supported algorithms:
-
-- `gradient_descent`
-- `stochastic_gradient_descent` (default)
-- `mini_batch_gradient_descent`
-
-This will generate a **weights file (**\`\`**)** that stores the trained model.
-
----
-
-## 🔮 Making Predictions
-
-Use the trained model to predict Hogwarts house classifications for a test dataset:
-
-```bash
-python src/logreg/logreg_predict.py -d data/dataset_test.csv -m weights.pkl
-```
-
-This will output a `houses.csv` file containing the predictions.
-
----
-
-## 📊 Data Visualization
-
-Before training, analyze the dataset using built-in visualization tools:
-
-### **Generate a Histogram**
-
-```bash
-python src/plotting/histogram.py
-```
-
-### **Generate a Scatter Plot**
-
-```bash
-python src/plotting/scatter_plot.py
-```
-
-### **Generate a Pair Plot**
-
-```bash
-python src/plotting/pair_plot.py
-```
-
----
-
-## 🧪 Project Structure
+## 📚 Project Structure
 
 ```
-.
-├── data
-│   ├── dataset_test.csv
-│   └── dataset_train.csv
-├── images (Generated plots)
-├── requirements.txt
-└── src
-    ├── logreg
-    │   ├── logistic_regression.py
-    │   ├── logreg_train.py
-    │   └── logreg_predict.py
-    ├── plotting
-    │   ├── histogram.py
-    │   ├── pair_plot.py
-    │   └── scatter_plot.py
-    └── utils
-        ├── describe.py (Basic dataset analysis)
+dslr/
+├── data/                      # Data directory
+│   ├── raw/                   # Raw datasets
+│   └── processed/             # Cleaned datasets
+├── images/                    # Generated visualizations
+├── notebooks/                 # Jupyter notebooks for demonstrations
+├── src/                       # Source code
+│   ├── data/                  # Data processing modules
+│   │   ├── describe.py        # Statistical analysis tool
+│   │   └── prepare_dataset.py # Data cleaning & preparation
+│   ├── models/                # Machine learning models
+│   │   ├── train.py           # Training algorithms
+│   │   └── predict.py         # Prediction functions
+│   └── visualization/         # Visualization tools
+│       ├── histogram.py       # Histogram generator
+│       ├── scatter_plot.py    # Scatter plot generator
+│       └── pair_plot.py       # Pair plot generator
+└── requirements.txt           # Project dependencies
 ```
 
----
+## 🔮 Future Enhancements
 
-## ✨ Future Improvements
+- Add regularization to prevent overfitting
+- Implement cross-validation for better model evaluation
+- Create an interactive web application for real-time sorting
+- Extend the algorithm to use neural networks for comparison
 
-- Implement **Regularization (L1/L2) to prevent overfitting**.
-- Add **Cross-Validation & Learning Rate Scheduling**.
-- Support **Real-Time Hyperparameter Tuning**.
-- Implement a **Neural Network Version** for comparison.
+## 🧙‍♂️ Author
 
----
-
-## 🎓 Author
-
-**Vitalii Frants**\
-📍 42 Vienna – AI & Algorithms\
+**Vitalii Frants**
+📍 42 Vienna
 👉 [GitHub](https://github.com/LuckyIntegral)
-
----
-
-### **🧙‍♂️ Ready to Sort Hogwarts Students? Try it now!**
-
