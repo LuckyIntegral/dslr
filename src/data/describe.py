@@ -28,11 +28,12 @@ def ft_std(series: pd.Series) -> np.float64:
     if mean is np.nan:
         return np.nan
 
-    if len(filtered) == 1:
+    denominator = len(filtered) - 1
+
+    if denominator == 0:
         return np.nan
 
-    variance = sum((value - mean) ** 2 for value in filtered) / (len(filtered) - 1)
-    return variance ** 0.5
+    return sum((value - mean) ** 2 for value in filtered) / denominator ** 0.5
 
 
 def ft_min(series: pd.Series) -> np.float64:
@@ -102,7 +103,8 @@ def ft_describe(df: pd.DataFrame, is_bonus: bool) -> pd.DataFrame:
         # interquartile range
         res.loc['iqr'] = res.loc['75%'] - res.loc['25%']
         # Measures the asymmetry of the distribution
-        res.loc['skewness'] = (res.loc['mean'] - res.loc['50%']) / res.loc['std']
+        res.loc['skewness'] = \
+            (res.loc['mean'] - res.loc['50%']) / res.loc['std']
 
     return res
 

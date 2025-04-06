@@ -77,8 +77,8 @@ def mini_batch_gradient_descent(weights: np.ndarray,
     return weights
 
 
-def get_optimization_algorithm_function(algo: str):
-    """ Return the appropriate gradient descent function based on the algorithm name """
+def get_optimization_algorithm_function(algo: str) -> Callable:
+    """ Return the appropriate gradient descent function based on the name """
     algorithms = {
         'stochastic_gradient_descent': stochastic_gradient_descent,
         'gradient_descent': gradient_descent,
@@ -119,36 +119,50 @@ def train(algo: str,
           features: np.ndarray,
           labels: pd.Series,
           config: TrainingConfig) -> pd.DataFrame:
-    """ Train the model for all houses using the specified gradient descent algorithm """
+    """ Train the model for all houses using the specified algorithm """
     algorithm = get_optimization_algorithm_function(algo)
     weights_dict = {}
 
     for house in HOUSES:
         logging.info(f"Training for house: {house}")
-        weights_dict[house] = train_one_vs_all(algorithm, house, features, labels, config)
+        weights_dict[house] = train_one_vs_all(
+                algorithm,
+                house,
+                features,
+                labels,
+                config,
+            )
 
-    return pd.DataFrame(weights_dict, index=[f"feature_{i}" for i in range(features.shape[1])]).T
+    return pd.DataFrame(
+            weights_dict,
+            index=[f"feature_{i}" for i in range(features.shape[1])]
+        ).T
 
 
 def parse_arguments() -> Namespace:
     """Parse command line arguments"""
-    parser = ArgumentParser(usage='train.py -d <path to your data> -a <algorithm>')
-    parser.add_argument('-d', type=str, required=True, help='Path to processed dataset')
+    parser = ArgumentParser(usage='train.py -d <dataset.csv> -a <algorithm>')
+    parser.add_argument('-d', type=str, required=True,
+                        help='Path to processed dataset')
     parser.add_argument('-a', type=str, default='stochastic_gradient_descent',
-                        choices=['gradient_descent', 'stochastic_gradient_descent', 'mini_batch_gradient_descent'],
+                        choices=['gradient_descent',
+                                 'stochastic_gradient_descent',
+                                 'mini_batch_gradient_descent'],
                         help='Algorithm to use for training')
 
     return parser.parse_args()
 
 
-def compute_accuracy(weights: pd.DataFrame, features: np.ndarray, labels: pd.Series) -> float:
+def compute_accuracy(weights: pd.DataFrame,
+                     features: np.ndarray,
+                     labels: pd.Series) -> float:
     """ Calculate the accuracy of the model on the provided dataset """
     predictions_df = predict(features, weights)
     matches = predictions_df['Hogwarts House'] == labels.reset_index(drop=True)
     return matches.mean() * 100
 
 
-def main() -> None:
+def main():
     """ Entrypoint to parse arguments and run the service """
     args = parse_arguments()
 

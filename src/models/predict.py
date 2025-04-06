@@ -13,9 +13,12 @@ DEFAULT_OUTPUT_PATH = 'houses.csv'
 def parse_arguments() -> Namespace:
     """ Parse command-line arguments """
     parser = ArgumentParser(usage="predict.py -d <dataset> -m <model>")
-    parser.add_argument('-d', type=str, required=True, help='Path to processed dataset CSV')
-    parser.add_argument('-m', type=str, required=True, help='Path to trained model weights (pickle)')
-    parser.add_argument('-o', type=str, default=DEFAULT_OUTPUT_PATH, help='Output file path for predictions')
+    parser.add_argument('-d', type=str, required=True,
+                        help='Path to processed dataset CSV')
+    parser.add_argument('-m', type=str, required=True,
+                        help='Path to trained model weights (pickle)')
+    parser.add_argument('-o', type=str, default=DEFAULT_OUTPUT_PATH,
+                        help='Output file path for predictions')
 
     return parser.parse_args()
 

@@ -21,8 +21,9 @@ def scatter_plot(df: pd.DataFrame, courses: list) -> None:
 
 
 def parse_argument() -> ArgumentParser:
-    parser = ArgumentParser(usage='histogram.py -c <course to plot> <course to plot>')
-    parser.add_argument('-c', type=str, required=False, nargs=2, choices=COURSES,
+    parser = ArgumentParser(usage='histogram.py -c <courses to plot>')
+    parser.add_argument('-c', type=str, required=False, nargs=2,
+                        choices=COURSES,
                         default=['Astronomy', 'Defense Against the Dark Arts'],
                         help='Course for which display hists')
 
